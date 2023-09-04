@@ -6,10 +6,11 @@
 	let longMode = false;
 </script>
 
-<div class="h-screen flex flex-col justify-center items-center gap-6">
-	<form method="POST" action="/add" use:enhance>
-		<h1 class="font-extrabold text-xl">{longMode ? 'lengthen' : 'shorten'} your links</h1>
+<div class="h-screen flex flex-col justify-center items-center gap-2">
+	<h1 class="text-4xl font-semibold">8L</h1>
+	<p class=" text-xl font-light">{longMode ? 'lengthen' : 'shorten'} your links</p>
 
+	<form method="POST" action="/add" use:enhance class="flex flex-col gap-2">
 		<Input
 			required
 			name="link"
@@ -18,9 +19,7 @@
 			autocomplete="url"
 			placeholder={longMode ? 'a very long link' : 'a very short link'}
 		/>
-		<div class="flex items-center space-x-2 justify-center1">
-			<Button type="submit">convert</Button>
-			<Switch id="long-mode" bind:checked={longMode} />
-		</div>
+		<Button class="w-full" type="submit">convert (doesnt work :/ )</Button>
 	</form>
+	<Switch id="long-mode" bind:checked={longMode} />
 </div>
