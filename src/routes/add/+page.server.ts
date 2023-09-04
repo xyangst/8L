@@ -9,14 +9,14 @@ export const actions: Actions = {
 		let x = 'not found';
 		if (link != null) {
 			const res = parseUrl(link);
-			if (typeof res == 'string') {
+			if (res == true) {
 				//res is a VALID url!
-				x = res;
+				x = link as string;
 			} else {
 				//res is NOT a valid url
 				x = res.message;
 			}
 		}
 		console.log(x, link);
-	}
+	},
 };
