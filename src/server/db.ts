@@ -7,7 +7,7 @@ const conf = {
 	},
 };
 class DB {
-	private urls: Map<string, string> = new Map().set('asdf', 'hello world');
+	private urls: Map<string, string> = new Map().set('test', 'https://example.com');
 	add(url: string, short = true) {
 		const len = short ? conf.lengths.short : conf.lengths.long;
 		let generated = '';

@@ -9,16 +9,17 @@ export const actions: Actions = {
 		// get whole object formdata instead of just params
 		const link = data.get('link');
 
-		let x = 'not found';
+		let x: string | false = 'not found';
 		if (link != null) {
 			const res = parseUrl(link);
 			if (typeof res == 'string') {
 				//res is a VALID url!
-				console.log(db.add(res));
+				x = db.add(res);
 			} else {
 				//res is NOT a valid url
 				x = res.message;
 			}
+			console.log(x);
 		}
 	},
 };
