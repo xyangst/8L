@@ -10,7 +10,14 @@
 	<h1 class="text-4xl font-semibold">8L</h1>
 	<p class=" text-xl font-light">{longMode ? 'lengthen' : 'shorten'} your links</p>
 
-	<form method="POST" action="/add" use:enhance class="flex flex-col gap-2">
+	<form
+		method="POST"
+		action="/add"
+		use:enhance={({ formElement, formData, action, cancel, submitter }) => {
+			return async ({ result, update }) => {};
+		}}
+		class="flex flex-col gap-2"
+	>
 		<Input
 			required
 			name="link"
@@ -20,6 +27,7 @@
 			placeholder={longMode ? 'a very long link' : 'a very short link'}
 		/>
 		<Button class="w-full" type="submit">convert (doesnt work :/ )</Button>
+		<input hidden name="long" value={longMode} />
 	</form>
 	<Switch id="long-mode" bind:checked={longMode} />
 </div>
