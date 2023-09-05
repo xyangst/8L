@@ -35,10 +35,10 @@
 				error = '';
 				const data = new FormData(event.currentTarget);
 				const serialized = Object.fromEntries(data.entries());
-				const validated = parseUrl(serialized);
-				if (typeof validated == 'string') {
+				const isValid = parseUrl(serialized);
+				if (typeof isValid == 'string') {
 					//isnt valid->we set msg and exit
-					error = validated;
+					error = isValid;
 					return;
 				}
 				const response = await fetch(event.currentTarget.action, {

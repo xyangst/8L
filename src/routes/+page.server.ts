@@ -10,14 +10,11 @@ export const actions: Actions = {
 		for (const [key, value] of form.entries()) {
 			data[key] = value;
 		}
-
-		let x: string | false = 'not found';
 		if (data != null) {
 			const res = parseUrl(data);
 			if (typeof res != 'string') {
 				//res is a VALID url!
-				x = db.add(res.link, res.long);
-				return { success: true, data: { url: x } };
+				return { success: true, data: { url: db.add(res.link, res.long) } };
 			} else {
 				return;
 			}

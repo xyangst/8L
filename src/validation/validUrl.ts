@@ -7,15 +7,15 @@ const urlSchema = object({
 });
 /**
  *
- * @param input input by user, objec
- * @returns either true if its a valid url or a issue
+ * @param input input by user, object
+ * @returns either string with error message or url or cleaned object
  */
 export function parseUrl(input: unknown) {
-	const result = safeParse(urlSchema, input, {});
+	const result = safeParse(urlSchema, input, { abortPipeEarly: true });
 	if (result.success) {
 		return result.output;
 	} else {
-		//we only care about first one we abort early + short form
+		//we only care about first one we abort early
 		return result.issues[0].message;
 	}
 }
