@@ -15,6 +15,7 @@ export const actions: Actions = {
 			if (typeof res == 'string') {
 				//res is a VALID url!
 				x = db.add(res);
+				return { success: true, data: { url: x } };
 			} else {
 				//res is NOT a valid url
 				x = res.message;

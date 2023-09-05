@@ -6,5 +6,5 @@
 
 <div class="h-screen flex flex-col justify-center items-center gap-2">
 	<h1>{err}</h1>
-	<Button href="/">go back</Button>
+	<Button href="/">Go Home</Button>
 </div>
