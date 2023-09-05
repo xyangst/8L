@@ -14,7 +14,7 @@ export const actions: Actions = {
 			const res = parseUrl(link);
 			if (typeof res == 'string') {
 				//res is a VALID url!
-				x = db.add(res);
+				x = db.add(res, false);
 				return { success: true, data: { url: x } };
 			} else {
 				//res is NOT a valid url
