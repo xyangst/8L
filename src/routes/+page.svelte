@@ -12,7 +12,6 @@
 
 	<form
 		method="POST"
-		action="/add"
 		use:enhance={({ formElement, formData, action, cancel, submitter }) => {
 			return async ({ result, update }) => {};
 		}}

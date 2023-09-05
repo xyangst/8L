@@ -11,7 +11,7 @@ export function parseUrl(input: unknown) {
 		abortPipeEarly: true,
 	});
 	if (result.success) {
-		return true;
+		return result.output;
 	} else {
 		//we only care about first one we abort early + short form
 		return result.issues[0];
