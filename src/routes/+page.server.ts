@@ -4,23 +4,23 @@ import { db } from '../server/db';
 
 export const actions: Actions = {
 	default: async ({ request }) => {
-		const data = await request.formData();
-		//need to add add support for short and other options in valibot,
+		const form = await request.formData();
 		// get whole object formdata instead of just params
-		const link = data.get('link');
+		const data: Record<string, unknown> = {};
+		for (const [key, value] of form.entries()) {
+			data[key] = value;
+		}
 
 		let x: string | false = 'not found';
-		if (link != null) {
-			const res = parseUrl(link);
-			if (typeof res == 'string') {
+		if (data != null) {
+			const res = parseUrl(data);
+			if (typeof res != 'string') {
 				//res is a VALID url!
-				x = db.add(res, false);
+				x = db.add(res.link, res.long);
 				return { success: true, data: { url: x } };
 			} else {
-				//res is NOT a valid url
-				x = res.message;
+				return;
 			}
-			console.log(x);
 		}
 	},
 };

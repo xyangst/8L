@@ -1,15 +1,22 @@
 <script lang="ts">
 	import { applyAction, deserialize } from '$app/forms';
 	import { invalidateAll } from '$app/navigation';
+	import { addToast } from '$components/melt/Toaster.svelte';
 	import Button from '$components/ui/button/button.svelte';
 	import Input from '$components/ui/input/input.svelte';
 	import Switch from '$components/ui/switch/switch.svelte';
 	import { parseUrl } from '$validation/validUrl';
 	import { ChevronsDown, Copy } from 'lucide-svelte';
+	//if long link shouold be generated
 	let longMode = false;
+	//error msg
 	let error = '';
+	//generated link
 	let serverLink = '';
+	//text on copy btn
 	let shortenedText: string;
+	//set to true after generated once
+	let hasGenerated = false;
 
 	$: shortenedText =
 		'ab.cd/' + (serverLink.length > 15 ? serverLink.slice(0, 9) + '..' : serverLink);
@@ -27,11 +34,11 @@
 			on:submit|preventDefault={async (event) => {
 				error = '';
 				const data = new FormData(event.currentTarget);
-
-				const isValid = parseUrl(data.get('link'));
-				if (typeof isValid != 'string') {
+				const serialized = Object.fromEntries(data.entries());
+				const validated = parseUrl(serialized);
+				if (typeof validated == 'string') {
 					//isnt valid->we set msg and exit
-					error = isValid.message;
+					error = validated;
 					return;
 				}
 				const response = await fetch(event.currentTarget.action, {
@@ -45,6 +52,7 @@
 					//we ignore because data exists and svelte dont allow ! here..
 					//@ts-ignore
 					serverLink = `${result.data.data.url}`;
+					hasGenerated = true;
 					console.log(serverLink.length);
 					await invalidateAll();
 				}
@@ -67,11 +75,21 @@
 		<ChevronsDown />
 		<Button
 			on:click={(event) => {
+				if (!hasGenerated) return;
 				navigator.clipboard.writeText(
 					`${window.location.protocol}//${window.location.host}/${serverLink}`,
 				);
+				addToast({
+					data: {
+						title: 'Copied',
+						description: 'Copied the link to your clipboard',
+						color: 'bg-primary',
+					},
+				});
 			}}
-			class="w-full max-w-sm flex justify-between overflow-hidden"
+			class="w-full max-w-sm flex justify-between overflow-hidden {hasGenerated
+				? ''
+				: 'cursor-not-allowed'}"
 			variant="outline"
 		>
 			{shortenedText}
