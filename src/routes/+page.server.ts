@@ -1,6 +1,6 @@
 import { parseUrl } from '$validation/validUrl';
 import type { Actions } from '@sveltejs/kit';
-import { db } from '../server/db';
+import { add_url } from '../server/db.server';
 
 export const actions: Actions = {
 	default: async ({ request }) => {
@@ -14,7 +14,7 @@ export const actions: Actions = {
 			const res = parseUrl(data);
 			if (typeof res != 'string') {
 				//res is a VALID url!
-				return { success: true, data: { url: db.add(res.link, res.long) } };
+				return { success: true, data: { url: add_url(res.link, res.long) } };
 			} else {
 				return;
 			}
