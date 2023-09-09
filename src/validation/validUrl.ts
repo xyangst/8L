@@ -1,9 +1,8 @@
-import { maxLength, object, safeParse, string, toTrimmed, transform, url } from 'valibot';
+import { boolean, coerce, maxLength, object, safeParse, string, toTrimmed, url } from 'valibot';
+
 const urlSchema = object({
 	link: string([toTrimmed(), maxLength(250, 'too long url sorry.'), url('not a valid url.')]),
-	long: transform(string(), (s) => {
-		return s == 'true';
-	}),
+	long: coerce(boolean(), Boolean),
 });
 /**
  *
