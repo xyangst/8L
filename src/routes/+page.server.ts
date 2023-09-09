@@ -14,7 +14,7 @@ export const actions: Actions = {
 			const res = parseUrl(data);
 			if (typeof res != 'string') {
 				//res is a VALID url!
-				return { success: true, data: { url: add_url(res.link, res.long) } };
+				return { success: true, data: { url: await add_url(res.link, res.long) } };
 			} else {
 				return;
 			}
