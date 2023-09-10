@@ -1,7 +1,6 @@
 <script lang="ts">
 	import { applyAction, deserialize } from '$app/forms';
 	import { invalidateAll } from '$app/navigation';
-	import Centered from '$components/Centered.svelte';
 	import { addToast } from '$components/melt/Toaster.svelte';
 	import Button from '$components/ui/button/button.svelte';
 	import Input from '$components/ui/input/input.svelte';
@@ -23,11 +22,11 @@
 	'ab.cd/' + (serverLink.length > 15 ? serverLink.slice(0, 9) + '..' : serverLink);
 </script>
 
-<Centered class="h-screen gap-4">
-	<h1 class="text-6xl font-semibold">8L</h1>
-	<p class=" text-3xl font-light">{longMode ? 'lengthen' : 'shorten'} your links</p>
-	<Centered class="gap-4 max-w-sm">
-		<span class="flex items-center gap-3 text-xl">switch mode:
+<div class=" flex flex-col gap-4 items-center md:pt-16">
+	<h1 class="text-8xl font-semibold">8L</h1>
+	<p class=" text-5xl font-light">{longMode ? 'lengthen' : 'shorten'} your links</p>
+	<div class="gap-2 max-w-sm flex flex-col items-center">
+		<span class="inline-flex items-center gap-3 text-3xl">switch mode:
 			<Switch id="long-mode" bind:checked={longMode} /></span>
 		<form
 			id="form"
@@ -63,17 +62,18 @@
 			class="flex flex-col gap-2 min-w-max"
 		>
 			<Input
+			class='text-2xl'
 				required
 				name="link"
 				id="link"
 				autocomplete="url"
-				placeholder={longMode ? 'a very long link' : 'a very short link'}
+				placeholder={longMode ? 'a very short link' : 'a very long link'}
 			/>
-			<Button class="w-full" type="submit">convert (works!)</Button>
+			<Button class="w-full text-2xl" size='lg' type="submit">Convert</Button>
 					<input hidden name="long" value={longMode} />
 			<p class="text-destructive text-xs">{error}</p>
 		</form>
-		<ChevronsDown />
+		<ChevronsDown class='w-14 h-14'/>
 		<Button
 			on:click={(event) => {
 				if (!hasGenerated) return;
@@ -88,13 +88,14 @@
 					},
 				});
 			}}
-			class="w-full max-w-sm flex justify-between overflow-hidden {hasGenerated
+			size='lg'
+			class="text-2xl w-full max-w-sm flex justify-between overflow-hidden {hasGenerated
 				? ''
 				: 'cursor-not-allowed'}"
 			variant="outline"
 		>
 			{shortenedText}
-			<Copy />
+			<Copy class='w-10 h-10'/>
 		</Button>
-	</Centered>
-</Centered>
+	</div>
+</div>
