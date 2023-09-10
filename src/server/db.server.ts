@@ -1,7 +1,16 @@
 import { env } from '$env/dynamic/private';
-import Redis from 'ioredis';
-export const REDIS_CONNECTION = new Redis(env.REDIS_URL);
+import { Redis } from 'ioredis';
+class RedisLocal<K, V> extends Map<K, V> {
+	exists(key: K): boolean {
+		return this.has(key);
+	}
+}
+console.log(import.meta.env.MODE);
+export const REDIS_CONNECTION =
+	import.meta.env.MODE == 'development' ? new RedisLocal() : new Redis(env.REDIS_URL);
+
 const URLSAFE_CHARS = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789-_';
+
 export async function add_url(url: string, short = true): Promise<string> {
 	let len = short ? 3 : 420;
 	let generated = '';
