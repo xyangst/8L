@@ -5,7 +5,6 @@ class RedisLocal<K, V> extends Map<K, V> {
 		return this.has(key);
 	}
 }
-console.log(import.meta.env.MODE);
 export const REDIS_CONNECTION =
 	import.meta.env.MODE == 'development' ? new RedisLocal() : new Redis(env.REDIS_URL);
 
@@ -26,7 +25,6 @@ export async function add_url(url: string, short = true): Promise<string> {
 		for (let index = 0; index < len; index++) {
 			generated += URLSAFE_CHARS[Math.floor(Math.random() * URLSAFE_CHARS.length)];
 		}
-		console.log('test');
 	} while (await REDIS_CONNECTION.exists(generated));
 	REDIS_CONNECTION.set(generated, url);
 	return generated;
