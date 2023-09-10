@@ -1,6 +1,7 @@
 <script lang="ts">
 	import { applyAction, deserialize } from '$app/forms';
 	import { invalidateAll } from '$app/navigation';
+	import Centered from '$components/Centered.svelte';
 	import { addToast } from '$components/melt/Toaster.svelte';
 	import Button from '$components/ui/button/button.svelte';
 	import Input from '$components/ui/input/input.svelte';
@@ -8,7 +9,7 @@
 	import { parseUrl } from '$validation/validUrl';
 	import { ChevronsDown, Copy } from 'lucide-svelte';
 	//if long link shouold be generated
-	let longMode = false;
+	let longMode=false;
 	//error msg
 	let error = '';
 	//generated link
@@ -19,14 +20,15 @@
 	let hasGenerated = false;
 
 	$: shortenedText =
-		'ab.cd/' + (serverLink.length > 15 ? serverLink.slice(0, 9) + '..' : serverLink);
+	'ab.cd/' + (serverLink.length > 15 ? serverLink.slice(0, 9) + '..' : serverLink);
 </script>
 
-<div class="h-screen flex justify-center items-center">
-	<div class="flex flex-col justify-center items-center gap-2 max-w-sm">
-		<h1 class="text-4xl font-semibold">8L</h1>
-		<p class=" text-xl font-light">{longMode ? 'lengthen' : 'shorten'} your links</p>
-		<Switch id="long-mode" bind:checked={longMode} />
+<Centered class="h-screen gap-4">
+	<h1 class="text-6xl font-semibold">8L</h1>
+	<p class=" text-3xl font-light">{longMode ? 'lengthen' : 'shorten'} your links</p>
+	<Centered class="gap-4 max-w-sm">
+		<span class="flex items-center gap-3 text-xl">switch mode:
+			<Switch id="long-mode" bind:checked={longMode} /></span>
 		<form
 			id="form"
 			action="/"
@@ -53,7 +55,6 @@
 					//@ts-ignore
 					serverLink = `${result.data.data.url}`;
 					hasGenerated = true;
-					console.log(serverLink.length);
 					await invalidateAll();
 				}
 
@@ -69,7 +70,7 @@
 				placeholder={longMode ? 'a very long link' : 'a very short link'}
 			/>
 			<Button class="w-full" type="submit">convert (works!)</Button>
-			<input hidden name="long" value={longMode} />
+					<input hidden name="long" value={longMode} />
 			<p class="text-destructive text-xs">{error}</p>
 		</form>
 		<ChevronsDown />
@@ -95,5 +96,5 @@
 			{shortenedText}
 			<Copy />
 		</Button>
-	</div>
-</div>
+	</Centered>
+</Centered>
