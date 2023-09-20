@@ -1,16 +1,12 @@
 <script lang="ts">
 	import { applyAction, deserialize } from '$app/forms';
 	import { invalidateAll } from '$app/navigation';
-	import { addToast } from '$components/melt/Toaster.svelte';
-	import Button from '$components/ui/button/button.svelte';
-	import Input from '$components/ui/input/input.svelte';
-	import Switch from '$components/ui/switch/switch.svelte';
 	import { parseUrl } from '$validation/validUrl';
+	import { LightSwitch, SlideToggle, getToastStore } from '@skeletonlabs/skeleton';
 	import { ChevronsDown, Copy } from 'lucide-svelte';
 	//if long link shouold be generated
-	let longMode=false;
+	let longMode = false;
 	//error msg
-	let error = '';
 	//generated link
 	let serverLink = '';
 	//text on copy btn
@@ -19,27 +15,30 @@
 	let hasGenerated = false;
 
 	$: shortenedText =
-	'ab.cd/' + (serverLink.length > 15 ? serverLink.slice(0, 9) + '..' : serverLink);
+		'ab.cd/' + (serverLink.length > 15 ? serverLink.slice(0, 9) + '..' : serverLink);
+
+	const toastStore = getToastStore();
 </script>
 
 <div class=" flex flex-col gap-4 items-center md:pt-16">
 	<h1 class="text-8xl font-semibold">8L</h1>
 	<p class=" text-5xl font-light">{longMode ? 'lengthen' : 'shorten'} your links</p>
 	<div class="gap-2 max-w-sm flex flex-col items-center">
-		<span class="inline-flex items-center gap-3 text-3xl">switch mode:
-			<Switch id="long-mode" bind:checked={longMode} /></span>
+		<span class="inline-flex items-center gap-3 text-3xl"
+			>switch mode:
+			<SlideToggle name="long" bind:checked={longMode} /></span
+		>
 		<form
 			id="form"
 			action="/"
 			method="POST"
 			on:submit|preventDefault={async (event) => {
-				error = '';
 				const data = new FormData(event.currentTarget);
 				const serialized = Object.fromEntries(data.entries());
 				const isValid = parseUrl(serialized);
 				if (typeof isValid == 'string') {
 					//isnt valid->we set msg and exit
-					error = isValid;
+					toastStore.trigger({ message: isValid, background: 'variant-filled-error' });
 					return;
 				}
 				const response = await fetch(event.currentTarget.action, {
@@ -61,41 +60,32 @@
 			}}
 			class="flex flex-col gap-2 min-w-max"
 		>
-			<Input
-			class='text-2xl'
+			<input
+				class="input variant-ring-primary p-2 text-2xl"
 				required
 				name="link"
 				id="link"
 				autocomplete="url"
 				placeholder={longMode ? 'a very short link' : 'a very long link'}
 			/>
-			<Button class="w-full text-2xl" size='lg' type="submit">Convert</Button>
-					<input hidden name="long" value={longMode} />
-			<p class="text-destructive text-xs">{error}</p>
+			<button class="btn btn-xl w-full text-2xl" type="submit">Convert</button>
 		</form>
-		<ChevronsDown class='w-14 h-14'/>
-		<Button
+		<ChevronsDown class="w-14 h-14" />
+		<button
 			on:click={(event) => {
 				if (!hasGenerated) return;
 				navigator.clipboard.writeText(
 					`${window.location.protocol}//${window.location.host}/${serverLink}`,
 				);
-				addToast({
-					data: {
-						title: 'Copied',
-						description: 'Copied the link to your clipboard',
-						color: 'bg-primary',
-					},
-				});
+				toastStore.trigger({ message: 'copied to clipboard' });
 			}}
-			size='lg'
-			class="text-2xl w-full max-w-sm flex justify-between overflow-hidden {hasGenerated
+			class="btn btn-xl variant-outline-primary text-2xl  w-full max-w-sm flex justify-between overflow-hidden {hasGenerated
 				? ''
 				: 'cursor-not-allowed'}"
-			variant="outline"
 		>
 			{shortenedText}
-			<Copy class='w-10 h-10'/>
-		</Button>
+			<Copy class="" />
+		</button>
 	</div>
+	<LightSwitch />
 </div>

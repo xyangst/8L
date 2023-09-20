@@ -9,7 +9,6 @@ const config = {
 
 	kit: {
 		alias: {
-			$components: 'src/lib/components',
 			$utils: 'src/lib/utils.ts',
 			$validation: 'src/validation',
 		},
