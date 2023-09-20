@@ -1,6 +1,6 @@
-import { parseUrl } from './validUrl';
 import type { Actions } from '@sveltejs/kit';
-import { add_url } from '../../server/db.server';
+import { add_url } from '../../db/db';
+import { parseUrl } from './validUrl';
 
 export const actions: Actions = {
 	default: async ({ request }) => {
