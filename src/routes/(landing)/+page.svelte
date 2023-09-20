@@ -1,7 +1,7 @@
 <script lang="ts">
 	import { applyAction, deserialize } from '$app/forms';
 	import { invalidateAll } from '$app/navigation';
-	import { parseUrl } from '$validation/validUrl';
+	import { parseUrl } from './validUrl';
 	import { LightSwitch, SlideToggle, getToastStore } from '@skeletonlabs/skeleton';
 	import { ChevronsDown, Copy } from 'lucide-svelte';
 	//if long link shouold be generated

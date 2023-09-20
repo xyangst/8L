@@ -1,7 +1,7 @@
 import { error, redirect } from '@sveltejs/kit';
 import { REDIS_CONNECTION } from '../../server/db.server';
 export async function load({ params }) {
-	const url = await REDIS_CONNECTION.get(params.slug);
+	const url = await REDIS_CONNECTION.get(params.shortened);
 	if (!url) throw error(404);
-	throw redirect(307, url);
+	throw redirect(307, url as string);
 }
