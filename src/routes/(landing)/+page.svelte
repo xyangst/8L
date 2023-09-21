@@ -1,9 +1,9 @@
 <script lang="ts">
 	import { applyAction, deserialize } from '$app/forms';
 	import { invalidateAll } from '$app/navigation';
-	import { parseUrl } from './validUrl';
 	import { LightSwitch, SlideToggle, getToastStore } from '@skeletonlabs/skeleton';
 	import { ChevronsDown, Copy } from 'lucide-svelte';
+	import { parseUrl } from './validUrl';
 	//if long link shouold be generated
 	let longMode = false;
 	//error msg
@@ -24,10 +24,7 @@
 	<h1 class="text-8xl font-semibold">8L</h1>
 	<p class=" text-5xl font-light">{longMode ? 'lengthen' : 'shorten'} your links</p>
 	<div class="gap-2 max-w-sm flex flex-col items-center">
-		<span class="inline-flex items-center gap-3 text-3xl"
-			>switch mode:
-			<SlideToggle name="long" bind:checked={longMode} /></span
-		>
+
 		<form
 			id="form"
 			action="/"
@@ -59,6 +56,10 @@
 				applyAction(result);
 			}}
 			class="flex flex-col gap-2 min-w-max"
+		>
+		<span class="inline-flex items-center gap-3 text-3xl"
+			>switch mode:
+			<SlideToggle name="long" bind:checked={longMode} /></span
 		>
 			<input
 				class="input variant-ring-primary p-2 text-2xl"
