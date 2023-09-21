@@ -16,13 +16,13 @@
 	let hasGenerated = false;
 
 	$: shortenedText =
-		'8L.vercel.app/' + (serverLink.length > 15 ? serverLink.slice(0, 9) + '..' : serverLink);
+		'9e.vercel.app/' + (serverLink.length > 15 ? serverLink.slice(0, 9) + '..' : serverLink);
 
 	const toastStore = getToastStore();
 </script>
 <div class="absolute bg-grid h-screen " />
 <div class="relative flex flex-col gap-4 items-center md:pt-16 h-screen">
-	<h1 class="text-primary-500 text-8xl font-semibold">8L</h1>
+	<h1 class="text-primary-500 text-8xl font-semibold">9e</h1>
 	<p class=" text-5xl font-light">{longMode ? 'lengthen' : 'shorten'} your links</p>
 	<div class="gap-2 max-w-sm flex flex-col items-center">
 		<form
