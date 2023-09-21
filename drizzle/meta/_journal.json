@@ -1,12 +1,12 @@
 {
   "version": "5",
-  "dialect": "mysql",
+  "dialect": "sqlite",
   "entries": [
     {
       "idx": 0,
       "version": "5",
-      "when": 1695244867437,
-      "tag": "0000_legal_loa",
+      "when": 1695302509774,
+      "tag": "0000_small_loners",
       "breakpoints": true
     }
   ]

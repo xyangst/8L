@@ -1,7 +1,9 @@
 import { error, redirect } from '@sveltejs/kit';
+import { db } from '../../db/db.js';
 export async function load({ params }) {
-	//const url = await REDIS_CONNECTION.get(params.shortened);
-	const url = 1 + 1 == Math.random();
+	const url = await db.query.link.findFirst({
+		where: (link, { eq }) => eq(link.origin, params.shortened),
+	});
 	if (!url) throw error(404);
-	//throw redirect(307, url as string);
+	throw redirect(307, url.destination as string);
 }

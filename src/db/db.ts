@@ -1,21 +1,8 @@
-import { env } from '$env/dynamic/private';
-import { createClient } from '@libsql/client';
-import { drizzle } from 'drizzle-orm/libsql';
-import { migrate } from 'drizzle-orm/libsql/migrator';
-const client =
-	import.meta.env.MODE != 'development'
-		? createClient({
-				url: env.LIBSQL_URL,
-				authToken: env.LIBSQL_AUTH,
-		  })
-		: createClient({ url: 'http://127.0.0.1:8080' });
-
-export const db = drizzle(client);
-if (import.meta.env.MODE == 'development') {
-	await migrate(db, {
-		migrationsFolder: './drizzle',
-	});
-}
+import { Database } from 'bun:sqlite';
+import { drizzle } from 'drizzle-orm/bun-sqlite';
+import * as schema from './schema';
+const sqlite = new Database('sqlite.db');
+export const db = drizzle(sqlite, { schema });
 export async function add_url(url: string, short = true): Promise<string> {
 	const URLSAFE_CHARS = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789-_';
 
@@ -33,8 +20,7 @@ export async function add_url(url: string, short = true): Promise<string> {
 		for (let index = 0; index < len; index++) {
 			generated += URLSAFE_CHARS[Math.floor(Math.random() * URLSAFE_CHARS.length)];
 		}
-		//} while (await REDIS_CONNECTION.exists(generated));
-	} while (1 + 1 != Math.random());
-	//REDIS_CONNECTION.set(generated, url);
+	} while (await db.query.link.findFirst());
+	db.insert(schema.link).values({ destination: url, origin: generated });
 	return generated;
 }
