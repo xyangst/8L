@@ -1,26 +1,10 @@
-import { Database } from 'bun:sqlite';
-import { drizzle } from 'drizzle-orm/bun-sqlite';
+import { env } from '$env/dynamic/private';
+import { LIBSQL_AUTH } from '$env/static/private';
+import { createClient } from '@libsql/client';
+import { drizzle } from 'drizzle-orm/libsql';
 import * as schema from './schema';
-const sqlite = new Database('sqlite.db');
-export const db = drizzle(sqlite, { schema });
-export async function add_url(url: string, short = true): Promise<string> {
-	const URLSAFE_CHARS = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789-_';
+const client = import.meta.env.PROD
+	? createClient({ url: env.LIBSQL_URL, authToken: LIBSQL_AUTH })
+	: createClient({ url: 'http://127.0.0.1:8080' });
 
-	let len = short ? 3 : 420;
-	let generated = '';
-	let tries = 0;
-
-	do {
-		if (tries > 1) {
-			len++;
-			tries = 0;
-		}
-		tries++;
-		generated = '';
-		for (let index = 0; index < len; index++) {
-			generated += URLSAFE_CHARS[Math.floor(Math.random() * URLSAFE_CHARS.length)];
-		}
-	} while (await db.query.link.findFirst());
-	db.insert(schema.link).values({ destination: url, origin: generated });
-	return generated;
-}
+export const db = drizzle(client, { schema });
