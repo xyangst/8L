@@ -1,3 +1,6 @@
 import { migrate } from 'drizzle-orm/libsql/migrator';
 import { db } from './db';
-migrate(db, { migrationsFolder: './drizzle' });
+export function applyMigrations() {
+	migrate(db, { migrationsFolder: './drizzle' });
+	console.log('migrated');
+}
