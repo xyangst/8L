@@ -3,7 +3,8 @@
 	import { invalidateAll } from '$app/navigation';
 	import { SlideToggle, getToastStore } from '@skeletonlabs/skeleton';
 	import { ChevronsDown, Copy } from 'lucide-svelte';
-	import { parseUrl } from './validUrl';
+	import { safeParse } from 'valibot';
+	import { urlSchema } from './validUrl';
 	//if long link shouold be generated
 	let longMode = false;
 	//error msg
@@ -32,10 +33,10 @@
 			on:submit|preventDefault={async (event) => {
 				const data = new FormData(event.currentTarget);
 				const serialized = Object.fromEntries(data.entries());
-				const isValid = parseUrl(serialized);
-				if (typeof isValid == 'string') {
+				const parseForm = safeParse(urlSchema,serialized);
+				if (!parseForm.success) {
 					//isnt valid->we set msg and exit
-					toastStore.trigger({ message: isValid, background: 'variant-filled-error' });
+					toastStore.trigger({ message: parseForm.issues[0].message, background: 'variant-filled-error' });
 					return;
 				}
 				const response = await fetch(event.currentTarget.action, {

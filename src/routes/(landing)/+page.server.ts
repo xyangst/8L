@@ -1,7 +1,8 @@
 import { db } from '$db/db';
 import { link } from '$db/schema';
 import type { Actions } from '@sveltejs/kit';
-import { parseUrl } from './validUrl';
+import { safeParse } from 'valibot';
+import { urlSchema } from './validUrl';
 
 export const actions: Actions = {
 	default: async ({ request }) => {
@@ -11,16 +12,15 @@ export const actions: Actions = {
 		for (const [key, value] of form.entries()) {
 			data[key] = value;
 		}
+		if (!data) return;
 
-		if (data == null) {
-			return;
-		}
+		const parseForm = safeParse(urlSchema, data);
+		if (!parseForm.success) return;
+		const res = parseForm.output;
 
-		const res = parseUrl(data);
-		if (typeof res == 'string') return;
-		//res is a VALID url!
+		//the form got validated!!!
 
-		return { success: true, data: { url: await add_url(res.link, res.long) } };
+		return { success: true, data: { url: await add_url(res.link, res.long == 'on') } };
 	},
 };
 
