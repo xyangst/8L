@@ -1,7 +1,7 @@
 <script lang="ts">
 	import { applyAction, deserialize } from '$app/forms';
 	import { invalidateAll } from '$app/navigation';
-	import { LightSwitch, SlideToggle, getToastStore } from '@skeletonlabs/skeleton';
+	import { SlideToggle, getToastStore } from '@skeletonlabs/skeleton';
 	import { ChevronsDown, Copy } from 'lucide-svelte';
 	import { parseUrl } from './validUrl';
 	//if long link shouold be generated
@@ -15,13 +15,13 @@
 	let hasGenerated = false;
 
 	$: shortenedText =
-		'ab.cd/' + (serverLink.length > 15 ? serverLink.slice(0, 9) + '..' : serverLink);
+		'8L.vercel.app/' + (serverLink.length > 15 ? serverLink.slice(0, 9) + '..' : serverLink);
 
 	const toastStore = getToastStore();
 </script>
 
 <div class=" flex flex-col gap-4 items-center md:pt-16">
-	<h1 class="text-8xl font-semibold">8L</h1>
+	<h1 class="text-primary-500 text-8xl font-semibold">8L</h1>
 	<p class=" text-5xl font-light">{longMode ? 'lengthen' : 'shorten'} your links</p>
 	<div class="gap-2 max-w-sm flex flex-col items-center">
 
@@ -57,19 +57,19 @@
 			}}
 			class="flex flex-col gap-2 min-w-max"
 		>
-		<span class="inline-flex items-center gap-3 text-3xl"
+		<span class="inline-flex items-center gap-3 text-3xl "
 			>switch mode:
-			<SlideToggle name="long" bind:checked={longMode} /></span
+			<SlideToggle active="bg-primary-500" name="long" bind:checked={longMode} /></span
 		>
 			<input
-				class="input variant-ring-primary p-2 text-2xl"
+				class="input variant-form-material p-2 text-2xl"
 				required
 				name="link"
 				id="link"
 				autocomplete="url"
 				placeholder={longMode ? 'a very short link' : 'a very long link'}
 			/>
-			<button class="btn btn-xl w-full text-2xl" type="submit">Convert</button>
+			<button class="btn variant-filled-primary  w-full text-2xl" type="submit">Convert</button>
 		</form>
 		<ChevronsDown class="w-14 h-14" />
 		<button
@@ -88,5 +88,4 @@
 			<Copy class="" />
 		</button>
 	</div>
-	<LightSwitch />
 </div>
