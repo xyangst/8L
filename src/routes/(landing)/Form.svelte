@@ -20,7 +20,8 @@
 
 	const toastStore = getToastStore();
 </script>
-<div class="absolute bg-grid h-screen " />
+
+<div class="absolute bg-grid h-screen" />
 <div class="relative flex flex-col gap-4 items-center md:pt-16 h-screen">
 	<h1 class="text-primary-500 text-8xl font-semibold">9e</h1>
 	<p class=" text-5xl font-light">{longMode ? 'lengthen' : 'shorten'} your links</p>
@@ -92,6 +93,7 @@
 		</button>
 	</div>
 </div>
+
 <style>
 	.bg-grid {
 		mask-image: linear-gradient(to bottom, black 50%, transparent 100%);
