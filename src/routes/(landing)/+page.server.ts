@@ -26,7 +26,6 @@ export const actions: Actions = {
 };
 export const load = async () => {
 	const queried = await db.select({ count: sql<number>`count(*)` }).from(link);
-	console.log(queried);
 	return { linkcount: queried[0].count };
 };
 async function add_url(url: string, short = true): Promise<string> {
