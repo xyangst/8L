@@ -1,8 +1,11 @@
 import { db } from '$db/db';
+import { auth } from '$db/lucia';
 import { link } from '$db/schema';
 import type { Actions } from '@sveltejs/kit';
+import { fail, redirect } from '@sveltejs/kit';
 import { sql } from 'drizzle-orm';
 import { safeParse } from 'valibot';
+import type { PageServerLoad } from './$types';
 import { urlSchema } from './validUrl';
 
 export const actions: Actions = {
@@ -23,10 +26,23 @@ export const actions: Actions = {
 
 		return { success: true, data: { url: await add_url(res.link, res.long == 'on') } };
 	},
+	logout: async ({ locals }) => {
+		const session = await locals.auth.validate();
+		if (!session) return fail(401);
+		await auth.invalidateSession(session.sessionId); // invalidate session
+		locals.auth.setSession(null); // remove cookie
+		throw redirect(302, '/login'); // redirect to login page
+	},
 };
-export const load = async () => {
+export const load: PageServerLoad = async ({ locals }) => {
+	const session = await locals.auth.validate();
+	if (!session) throw redirect(302, '/login');
 	const queried = await db.select({ count: sql<number>`count(*)` }).from(link);
-	return { linkcount: queried[0].count };
+	return {
+		userId: session.user.userId,
+		githubUsername: session.user.githubUsername,
+		linkcount: queried[0].count,
+	};
 };
 async function add_url(url: string, short = true): Promise<string> {
 	const URLSAFE_CHARS = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789-_';
