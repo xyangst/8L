@@ -9,21 +9,19 @@ import type { PageServerLoad } from './$types';
 import { urlSchema } from './validUrl';
 
 export const actions: Actions = {
-	addlink: async ({ request }) => {
+	addlink: async ({ request, locals }) => {
+		const session = await locals.auth.validate();
+		if (!session) throw redirect(302, '/login');
+
 		const form = await request.formData();
 		// get whole object formdata instead of just params
 		const data: Record<string, unknown> = {};
 		for (const [key, value] of form.entries()) {
 			data[key] = value;
 		}
-		if (!data) return;
-
 		const parseForm = safeParse(urlSchema, data);
 		if (!parseForm.success) return;
 		const res = parseForm.output;
-
-		//the form got validated!!!
-
 		return { success: true, data: { url: await add_url(res.link, res.long == 'on') } };
 	},
 	logout: async ({ locals }) => {

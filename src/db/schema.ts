@@ -5,6 +5,8 @@ export const link = sqliteTable('link', {
 	origin: text('name').primaryKey(),
 	destination: text('destination').notNull(),
 	createdAt: integer('createdAt').default(sql`CURRENT_TIMESTAMP`),
+	views: integer('views').notNull(),
+	creator: text('id').references(() => user.id),
 });
 
 //auth
