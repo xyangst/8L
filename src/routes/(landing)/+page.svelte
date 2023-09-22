@@ -4,7 +4,6 @@
 	import Form from './Form.svelte';
 	export let data;
 </script>
-<h1>Profile</h1>
 <p>User id: {data.userId}</p>
 <p>GitHub username: {data.githubUsername}</p>
 <form method="post" action="?/logout" use:enhance>

@@ -28,7 +28,7 @@
 	<div class="gap-2 max-w-sm flex flex-col items-center">
 		<form
 			id="form"
-			action="/"
+			action="?/addlink"
 			method="POST"
 			on:submit|preventDefault={async (event) => {
 				const data = new FormData(event.currentTarget);

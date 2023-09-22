@@ -9,7 +9,7 @@ import type { PageServerLoad } from './$types';
 import { urlSchema } from './validUrl';
 
 export const actions: Actions = {
-	default: async ({ request }) => {
+	addlink: async ({ request }) => {
 		const form = await request.formData();
 		// get whole object formdata instead of just params
 		const data: Record<string, unknown> = {};
