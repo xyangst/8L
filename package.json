@@ -7,7 +7,7 @@
 		"build": "vite build",
 		"preview": "vite preview",
 		"migration:generate": "drizzle-kit generate:sqlite --schema=./src/db/schema.ts",
-		"migration:migrate": "./src/db/migrate.ts",
+		"migration:migrate": "vite-node ./src/db/migrate.ts",
 		"migrate": "bun migration:generate;bun migration:migrate",
 		"check": "svelte-kit sync && svelte-check --tsconfig ./tsconfig.json",
 		"check:watch": "svelte-kit sync && svelte-check --tsconfig ./tsconfig.json --watch",
